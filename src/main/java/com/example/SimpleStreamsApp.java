@@ -1,20 +1,16 @@
 package com.example;
 
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Produced;
-import java.util.Properties;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-import java.util.stream.Collectors;
 
 public class SimpleStreamsApp {
     public static void main(String[] args) {
@@ -27,7 +23,7 @@ public class SimpleStreamsApp {
         StreamsBuilder builder = new StreamsBuilder();
 
         Map<String, String> hardcodedMap = new HashMap<>();
-        hardcodedMap.put("communication", "[\"a\", \"b\"]");
+        hardcodedMap.put("Communication", "[\"a\", \"b\"]");
         hardcodedMap.put("healthcare", "[\"c\", \"d\"]");
         hardcodedMap.put("clothing", "[\"e\"]");
 
