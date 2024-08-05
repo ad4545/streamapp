@@ -1,0 +1,28 @@
+pipeline {
+    agent {
+        docker {
+            image 'adkumar123/ecom-docker-agent:latest'
+            // If you want to run Docker in Docker
+            args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
+        }
+    }
+    stages {
+        stage('Compilation') {
+            steps {
+                sh 'mvn compile'
+            }
+            post{
+              failure {
+                error('Compilation failed. Stopping the build.')
+            }
+            }
+        }
+        stage('Test & Build') {
+            steps {
+                sh 'mvn test && mvn clean package'
+            }
+        }
+        
+        // Add other stages as needed
+    }
+}
