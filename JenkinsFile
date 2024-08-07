@@ -34,10 +34,8 @@ pipeline {
         }
         stage('OWASP Dependency-Check') {
             steps {
-                script {
-                    def depCheckTool = tool name: 'DP-Check', type: 'org.jenkinsci.plugins.DependencyCheck.tools.DependencyCheckInstallation'
-                    sh "${depCheckTool}/bin/dependency-check.sh --project 'MyProject' --scan . --outdir dependency-check-report"
-                }
+                dependencyCheck additionalArguments: '', odcInstallation: 'DP-Check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
             }
         }
         // Add other stages as needed
