@@ -33,7 +33,7 @@ pipeline {
             }
         }
         stage('OWASP Dependency-Check') {
-            agent none
+            agent any
             steps {
                 dependencyCheck additionalArguments: '', odcInstallation: 'DP-Check'
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
