@@ -29,9 +29,14 @@ pipeline {
             steps {
             withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
                 sh 'mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
+               }
             }
         }
-    }
+        stage('OWASP Dependency-Check') {
+            steps {
+                dependencyCheck additionalArguments: '--project "MyProject"', autoUpdate: true, odcInstallation: 'DP-Check', outputDirectory: 'dependency-check-report'
+            }
+        }
         
         // Add other stages as needed
     }
