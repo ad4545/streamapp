@@ -32,15 +32,12 @@ pipeline {
                }
             }
         }
-        stage('OWASP Dependency-Check Vulnerabilities') {
-          steps {
-            dependencyCheck additionalArguments: ''' 
-                    -o './'
-                    -s './'
-                    -f 'ALL' 
-                    --prettyPrint''', odcInstallation: 'DP-Check'
-        
-            dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+        stage('OWASP Dependency-Check') {
+            steps {
+                script {
+                    def depCheckTool = tool name: 'DP-Check', type: 'org.jenkinsci.plugins.DependencyCheck.tools.DependencyCheckInstallation'
+                    sh "${depCheckTool}/bin/dependency-check.sh --project 'MyProject' --scan . --outdir dependency-check-report"
+                }
             }
         }
         // Add other stages as needed
