@@ -33,7 +33,10 @@ pipeline {
             }
         }
         stage('OWASP Dependency-Check') {
-            agent any
+            agent {
+                label 'master'
+                customWorkspace '/var/lib/jenkins/owasp-dependency-check-workspace'
+            }
             steps {
                 dependencyCheck additionalArguments: '', odcInstallation: 'DP-Check'
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
