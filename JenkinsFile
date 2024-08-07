@@ -34,7 +34,7 @@ pipeline {
         }
         stage('OWASP Dependency-Check') {
             steps {
-                dependencyCheck additionalArguments: '--project "MyProject"', autoUpdate: true, odcInstallation: 'DP-Check', outputDirectory: 'dependency-check-report'
+                dependencyCheck additionalArguments: '--project "MyProject"', odcInstallation: 'DP-Check'
             }
         }
         
