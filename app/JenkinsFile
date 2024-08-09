@@ -7,6 +7,12 @@ pipeline {
         }
     }
     stages {
+        stage('Checkout') {
+      steps {
+        sh 'echo passed'
+        git branch: 'master', url: 'https://github.com/ad4545/streamapp'
+      }
+    }
         stage('Compilation') {
             steps {
                 sh 'cd app && mvn compile'
