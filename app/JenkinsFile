@@ -68,7 +68,7 @@ pipeline {
                         cd ${repoDir}
                     '''
                     
-                    // Update the image tag in the deployment file
+                    
                     sh '''
                         
                         sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" manifests/deployment.yaml
