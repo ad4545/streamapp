@@ -59,7 +59,6 @@ pipeline {
             withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                 script{
                     def repoDir = "deployment-repo-${BUILD_NUMBER}"
-                   
                    sh '''
                       if [ -d "${repoDir}" ]; then
                         rm -rf ${repoDir}
