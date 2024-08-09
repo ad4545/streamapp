@@ -58,13 +58,14 @@ pipeline {
           steps {
             withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                 script{
-                    def repoDir = "deployment-repo-${BUILD_NUMBER}"
+                   def repoDir = "deployment-repo-${BUILD_NUMBER}"
+
                    sh '''
                       if [ -d "${repoDir}" ]; then
                         rm -rf ${repoDir}
                       fi
-                        git clone -b ${TARGET_GIT_BRANCH} ${TARGET_GIT_REPO} ${repoDir}
-                        cd ${repoDir}
+                        git clone -b ${TARGET_GIT_BRANCH} ${TARGET_GIT_REPO} deployment-repo-${BUILD_NUMBER}
+                        cd deployment-repo-${BUILD_NUMBER}
                     '''
                     
                     
