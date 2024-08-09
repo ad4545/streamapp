@@ -49,25 +49,35 @@ pipeline {
           }
         }
 
-        stage('Update Deployment File') {
-        environment {
-            GIT_REPO_NAME = "streamapp"
+      stage('Update Deployment File in Another Repo') {
+          environment {
+            TARGET_GIT_REPO = "https://github.com/ad4545/ecom_manifests"
+            TARGET_GIT_BRANCH = "main"
             GIT_USER_NAME = "ad4545"
-        }
-        steps {
+            GIT_EMAIL = "adarsh.kumar@sevenrobotics.in"
+          }
+          steps {
             withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-                sh '''
-                    git config user.email "adarsh.kumar@sevenrobotics.in"
-                    git config user.name "Adarsh Kumar"
-                    BUILD_NUMBER=${BUILD_NUMBER}
-                    sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" manifests/deployment.yaml
-                    git add .
-                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:master
-                '''
+                script {
+                    // Clone the target repository
+                    sh '''
+                        git clone -b ${TARGET_GIT_BRANCH} ${TARGET_GIT_REPO} target-repo
+                        cd target-repo
+                    '''
+                    
+                    // Update the image tag in the deployment file
+                    sh '''
+                        sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" manifests/deployment.yaml
+                        git config user.email "${GIT_EMAIL}"
+                        git config user.name "${GIT_USER_NAME}"
+                        git add .
+                        git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                        git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${TARGET_GIT_REPO} HEAD:${TARGET_GIT_BRANCH}
+                    '''
+                }
             }
+          }
         }
-    }
          
         // Add other stages as needed
     }
