@@ -72,7 +72,7 @@ pipeline {
                         git config user.name "${GIT_USER_NAME}"
                         git add .
                         git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-                        git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${TARGET_GIT_REPO} HEAD:${TARGET_GIT_BRANCH}
+                        git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/ecom_manifests HEAD:${TARGET_GIT_BRANCH}
                     '''
                 }
             }
