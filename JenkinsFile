@@ -1,6 +1,11 @@
 pipeline {
-    agent any
-    
+    agent {
+        docker {
+            image 'abhishekf5/maven-abhishek-docker-agent:v1'
+            // If you want to run Docker in Docker
+            // args '--user root -v /var/run/docker.sock:/var/run/docker.sock' // mount Docker socket to access the host's Docker daemon
+        }
+    }
     stages {
         stage('Compilation') {
             steps {
@@ -43,7 +48,7 @@ pipeline {
         //     }
         //   }
         // }
-        stage('Trivy Scan') {
+         stage('Trivy Scan') {
             steps {
                 script {
                     sh 'trivy image --exit-code 1 --severity CRITICAL,HIGH ${DOCKER_IMAGE}'
