@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ad-stream-app
+  labels:
+    app: ad-stream-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ad-stream-app
+  template:
+    metadata:
+      labels:
+        app: ad-stream-app
+    spec:
+      containers:
+      - name: ad-stream-app
+        image: adkumar123/real-time-ad-stream:20
