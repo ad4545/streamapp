@@ -7,11 +7,6 @@ pipeline {
         }
     }
     stages {
-        stage('Checkout') {
-            steps {
-                git credentialsId: 'github', url: 'https://github.com/ad4545/streamapp'
-            }
-        }
         stage('Compilation') {
             steps {
                 sh 'cd app && mvn compile'
