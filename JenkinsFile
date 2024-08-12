@@ -87,12 +87,6 @@ pipeline {
         // Add other stages as needed
 
         stage('Git Checkout') {
-            agent{
-              docker {
-                  image 'adkumar123/ecom-docker-agent:latest'
-                  args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-             }
-            }
             steps {
                 script {
                     // Checkout another repository
@@ -103,6 +97,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                 sh '''
                         
+                      rm -rf target  
                       sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" manifests/deployment.yaml
                       git config user.email "adarsh.kumar@sevenrobotics.in"
                       git config user.name "Adarsh Kumar"
