@@ -94,7 +94,17 @@ pipeline {
                         url: 'https://github.com/ad4545/ecom_manifests'
                 }
                 // Run commands in the context of the checked-out repository
-                sh 'cd manifests && echo Working in the new repository'
+                withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+                sh '''
+                        
+                      sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" manifests/deployment.yaml
+                      git config user.email "adarsh.kumar@sevenrobotics.in"
+                      git config user.name "Adarsh Kumar"
+                      git add manifests/deployment.yaml
+                      git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                      git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/ecom_manifests HEAD:main -f
+                   '''
+            }
             }
         }
     }
