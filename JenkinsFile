@@ -49,45 +49,7 @@ pipeline {
           }
         }
 
-      // stage('Update Deployment File in Another Repo') {
-      //     environment {
-      //       TARGET_GIT_REPO = "https://github.com/ad4545/ecom_manifests"
-      //       TARGET_GIT_BRANCH = "main"
-      //       GIT_USER_NAME = "ad4545"
-      //     }
-      //     steps {
-      //       withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-      //           script{
-      //              def repoDir = "deployment-repo-${BUILD_NUMBER}"
-
-      //              sh '''
-      //                 if [ -d "${repoDir}" ]; then
-      //                   rm -rf ${repoDir}
-      //                 fi
-      //                   git clone -b ${TARGET_GIT_BRANCH} ${TARGET_GIT_REPO} deployment-repo-${BUILD_NUMBER}
-      //                   cd deployment-repo-${BUILD_NUMBER}
-      //               '''
-                    
-                    
-      //               sh '''
-                        
-      //                   sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" manifests/deployment.yaml
-      //                   git config user.email "adarsh.kumar@sevenrobotics.in"
-      //                   git config user.name "Adarsh Kumar"
-      //                   git add manifests/deployment.yaml
-      //                   git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-      //                   git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/ecom_manifests HEAD:${TARGET_GIT_BRANCH} -f
-      //               '''
-
-      //           }    
-      //       }
-      //     }
-      //   }
-         
-        // Add other stages as needed
-
-
-        stage('Git Checkout') {
+        stage('Update Deployment') {
             steps {
                 script {
                     // Checkout another repository
