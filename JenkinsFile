@@ -86,6 +86,15 @@ pipeline {
          
         // Add other stages as needed
 
+        stage('Update Image Tag') {
+            steps {
+                script {
+                    // Replace placeholder with current build number
+                    sh "sed -i 's/replaceImageTag/${BUILD_NUMBER}/g' manifests/deployment.yaml"
+                }
+            }
+        }
+
         stage('Git Checkout') {
             steps {
                 script {
@@ -96,13 +105,14 @@ pipeline {
                 // Run commands in the context of the checked-out repository
                 withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                 sh '''
-                         
-                      sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" manifests/deployment.yaml
+                      rm -rf target
                       git config user.email "adarsh.kumar@sevenrobotics.in"
                       git config user.name "Adarsh Kumar"
+                      BUILD_NUMBER=${BUILD_NUMBER}
+                      sed -i "s|\\(image: adkumar123/real-time-ad-stream:\\)\\([0-9]*\\)|\\1${BUILD_NUMBER}|g" manifests/deployment.yaml
                       git add .
                       git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-                      git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/ecom_manifests HEAD:main -f
+                      git push https://${GITHUB_TOKEN}@github.com/ad4545/ecom_manifests HEAD:main -f
                    '''
             }
             }
