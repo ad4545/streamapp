@@ -86,14 +86,6 @@ pipeline {
          
         // Add other stages as needed
 
-        stage('Update Image Tag') {
-            steps {
-                script {
-                    // Replace placeholder with current build number
-                    sh "sed -i 's/replaceImageTag/${BUILD_NUMBER}/g' manifests/deployment.yaml"
-                }
-            }
-        }
 
         stage('Git Checkout') {
             steps {
