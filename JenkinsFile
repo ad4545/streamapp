@@ -87,6 +87,11 @@ pipeline {
         // Add other stages as needed
 
         stage('Git Checkout') {
+            agent{
+              docker {
+                  image 'adkumar123/ecom-docker-agent:tagname'
+             }
+            }
             steps {
                 script {
                     // Checkout another repository
