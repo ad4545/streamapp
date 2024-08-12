@@ -89,7 +89,7 @@ pipeline {
         stage('Git Checkout') {
             agent{
               docker {
-                  image 'adkumar123/ecom-docker-agent:tagname'
+                  image 'adkumar123/ecom-docker-agent:latest'
              }
             }
             steps {
