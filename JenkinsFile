@@ -61,9 +61,6 @@ pipeline {
         '''
           }
           post {
-                always {
-                    archiveArtifacts allowEmptyArchive: true, artifacts: '**/trivy-report.html'
-                }
                 failure {
                     error('Trivy scan failed due to detected vulnerabilities.')
                 }
