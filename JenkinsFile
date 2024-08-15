@@ -60,6 +60,14 @@ pipeline {
            trivy image --exit-code 1 --severity HIGH,CRITICAL adkumar123/real-time-ad-stream:${BUILD_NUMBER}
         '''
           }
+          post {
+                always {
+                    archiveArtifacts allowEmptyArchive: true, artifacts: '**/trivy-report.html'
+                }
+                failure {
+                    error('Trivy scan failed due to detected vulnerabilities.')
+                }
+         }
        }
         // stage('Update Deployment') {
         //     steps {
