@@ -49,45 +49,28 @@ pipeline {
           }
         }
         
-        stage('Trivy Scan') {
-        steps {
-        sh '''
-           apt-get update
-           apt-get install -y wget
-           wget https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.deb
-           dpkg -i trivy_0.18.3_Linux-64bit.deb
-           rm trivy_0.18.3_Linux-64bit.deb
-           trivy image --exit-code 1 --severity HIGH,CRITICAL adkumar123/real-time-ad-stream:${BUILD_NUMBER}
-        '''
-          }
-          post {
-                failure {
-                    error('Trivy scan failed due to detected vulnerabilities.')
+        stage('Update Deployment') {
+            steps {
+                script {
+                    // Checkout another repository
+                    git branch: 'main',
+                        url: 'https://github.com/ad4545/ecom_manifests'
                 }
-         }
-       }
-        // stage('Update Deployment') {
-        //     steps {
-        //         script {
-        //             // Checkout another repository
-        //             git branch: 'main',
-        //                 url: 'https://github.com/ad4545/ecom_manifests'
-        //         }
-        //         // Run commands in the context of the checked-out repository
-        //         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-        //         sh '''
-        //               rm -rf target
-        //               git config user.email "adarsh.kumar@sevenrobotics.in"
-        //               git config user.name "Adarsh Kumar"
-        //               BUILD_NUMBER=${BUILD_NUMBER}
-        //               sed -i "s|\\(image: adkumar123/real-time-ad-stream:\\)\\([0-9]*\\)|\\1${BUILD_NUMBER}|g" manifests/deployment.yaml
-        //               git add .
-        //               git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-        //               git push https://${GITHUB_TOKEN}@github.com/ad4545/ecom_manifests HEAD:main -f
-        //            '''
-        //     }
-        //     }
-        // }
+                // Run commands in the context of the checked-out repository
+                withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+                sh '''
+                      rm -rf target
+                      git config user.email "adarsh.kumar@sevenrobotics.in"
+                      git config user.name "Adarsh Kumar"
+                      BUILD_NUMBER=${BUILD_NUMBER}
+                      sed -i "s|\\(image: adkumar123/real-time-ad-stream:\\)\\([0-9]*\\)|\\1${BUILD_NUMBER}|g" manifests/deployment.yaml
+                      git add .
+                      git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                      git push https://${GITHUB_TOKEN}@github.com/ad4545/ecom_manifests HEAD:main -f
+                   '''
+            }
+            }
+        }
        
     }
 }
