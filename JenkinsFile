@@ -57,7 +57,7 @@ pipeline {
            wget https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.deb
            dpkg -i trivy_0.18.3_Linux-64bit.deb
            rm trivy_0.18.3_Linux-64bit.deb
-           trivy image --exit-code 1 --severity HIGH,CRITICAL ${DOCKER_IMAGE}
+           trivy image --exit-code 1 --severity HIGH,CRITICAL adkumar123/real-time-ad-stream:${BUILD_NUMBER}
         '''
           }
        }
